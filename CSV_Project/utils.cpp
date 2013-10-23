@@ -68,7 +68,7 @@ matrix select() {
 }
 
 // Implementation of "select"
-matrix select(str_vec& col_names, matrix& _table) {
+/*matrix select(str_vec& col_names, matrix& _table) {
 	matrix result;
 	short col_width = 15;
 
@@ -110,13 +110,21 @@ matrix select(str_vec& col_names, matrix& _table) {
 	} // if (col_names.size() >= 1)
 	// **MAGIC** ENDS HERE
 	return result;
-}
+}*/ // OLD
 
 // Implementation of "select"
-matrix select(str_vec& col_names, matrix& condition, matrix& _table) {
-	//TODO: IMPLEMENT
-	matrix result;
-	return result;
+void print(matrix& _table) {
+	for (int i = 0; i < _table.size(); i++) {
+		for (int j = 0; j < _table.at(i).size(); j++) {
+				if (j == _table.at(i).size() - 1) {
+					cout << _table.at(i).at(j);
+				}
+				else {
+					cout << _table.at(i).at(j) << ", ";
+				}
+		}
+		cout << endl;
+	}
 }
 
 str_vec info(matrix& _table) {

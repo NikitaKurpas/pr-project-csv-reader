@@ -1,5 +1,5 @@
 #include "mode_expert.h"
-
+/*
 void initModeExpert() {
 	cin.sync();
 	command = "";
@@ -87,4 +87,4 @@ void initModeExpert() {
 			cout << "output> No command found: " << command << endl;
 		} // command invalid
 	}
-}
+}*/
