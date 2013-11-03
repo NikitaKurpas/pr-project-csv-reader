@@ -24,18 +24,12 @@
     <ClCompile Include="mode_simple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mode_expert.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mode_simple.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mode_expert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">

@@ -77,13 +77,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="mode_expert.cpp" />
     <ClCompile Include="mode_simple.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
-    <ClInclude Include="mode_expert.h" />
     <ClInclude Include="mode_simple.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
