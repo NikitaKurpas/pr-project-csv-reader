@@ -5,9 +5,9 @@ using namespace std;
 struct FileInfo file_info;
 
 /*
-* Converts all given string charecters to lowercase
-* @param str
-*/
+ * Converts all given string charecters to lowercase
+ * @param str
+ */
 string toLowerCase(string str)
 {
 	const int length = str.length();
@@ -18,11 +18,18 @@ string toLowerCase(string str)
 	return str;
 }
 
+int StrToInt(string str) {
+	int result;
+	istringstream(str) >> result;
+	return result;
+
+}
+
 /*
-* Prints one help command. Only used in printHelp() method
-* @param cmd
-* @param desc
-*/
+ * Prints one help command. Only used in printHelp() method
+ * @param cmd
+ * @param desc
+ */
 void printCommand(string cmd, string desc)
 {
 	cout << setfill('.') << setw(20);
@@ -33,8 +40,8 @@ void printCommand(string cmd, string desc)
 
 
 /*
-* Prints help
-*/
+ * Prints help
+ */
 void printHelp()
 {
 	cout << endl;
@@ -49,13 +56,13 @@ void printHelp()
 }
 
 /*
-* Reads a CSV file in fstream to the _table using specified line and element delimiters
-* @param file
-* @param _table
-* @param _columns
-* @param _LINE_DELIMITER
-* @param _ELEMENT_DELIMITER
-*/
+ * Reads a CSV file in fstream to the _table using specified line and element delimiters
+ * @param file
+ * @param _table
+ * @param _columns
+ * @param _LINE_DELIMITER
+ * @param _ELEMENT_DELIMITER
+ */
 void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DELIMITER, char _ELEMENT_DELIMITER) {
 	string *line = new string, *lineElement = new string;
 
@@ -82,6 +89,7 @@ void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DEL
 			v_line->push_back(*lineElement);
 			element_count++;
 		}
+		v_line->push_back(to_string(row_count));
 		_table.push_back(*v_line);
 		delete v_line;
 	}
@@ -94,10 +102,10 @@ void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DEL
 
 
 /*
-* Splits the given string into elements
-* @param str
-* @param delim
-*/
+ * Splits the given string into elements
+ * @param str
+ * @param delim
+ */
 str_vec split(string& str, char delim) {
 	stringstream stream(str);
 	string item;
@@ -108,7 +116,6 @@ str_vec split(string& str, char delim) {
 	return result;
 }
 
-// Implementation of "select"
 /*matrix select(str_vec& col_names, matrix& _table) {
 	matrix result;
 	short col_width = 15;
@@ -151,14 +158,17 @@ str_vec split(string& str, char delim) {
 	} // if (col_names.size() >= 1)
 	// **MAGIC** ENDS HERE
 	return result;
-}*/ // OLD
+}*/
 
 /*
-* Prints the contents of the _table on the screen
+* Prints the contents of the _table on the screen.
 * @param _table
+* @param _columns
 */
 void print(matrix& _table, str_vec& _columns) {
+	cout << "[Row number]";
 	if (!_columns.empty()) {
+		cout << ", ";
 		for (int i = 0; i < _columns.size(); i++) {
 			string tmp = "[" + _columns.at(i) + "]";
 			if (i == _columns.size() - 1)
@@ -169,8 +179,9 @@ void print(matrix& _table, str_vec& _columns) {
 	}
 	cout << endl;
 	for (int i = 0; i < _table.size(); i++) {
-		for (int j = 0; j < _table.at(i).size(); j++) {
-				if (j == _table.at(i).size() - 1) {
+		cout << setw(6) << left << "[" + to_string(i + 1) + "]";
+		for (int j = 0; j < _table.at(i).size() - 1; j++) {
+				if (j == _table.at(i).size() - 2) {
 					cout << _table.at(i).at(j);
 				}
 				else {
@@ -182,17 +193,20 @@ void print(matrix& _table, str_vec& _columns) {
 }
 
 /*
-* Searches the _table for occurances of str 
-* @param _table
-* @param str
-*/
+ * Searches the _table for occurances of str 
+ * \param[in]  _table
+ * \param[in]  str
+ * \return	   matrix
+ */
 matrix search(matrix& _table, string str) {
 	matrix result;
 	for (int i = 0; i < _table.size(); i++) {
 		for (int j = 0; j < _table.at(i).size(); j++) {
 			std::size_t found = toLowerCase(_table.at(i).at(j)).find(toLowerCase(str));
 			if (found != std::string::npos) {
-				result.push_back(_table.at(i));
+				str_vec tmp = _table.at(i);
+				tmp.push_back(to_string(i));
+				result.push_back(tmp);
 				break;
 			}
 		}
@@ -207,15 +221,15 @@ matrix search(matrix& _table, string str) {
 str_vec info() {
 	str_vec result;
 	result.push_back("INFORMATION: ");
-	result.push_back("File path: " + file_info.file_path);
-	result.push_back("File size: " + to_string(file_info.file_size) + " bytes");
-	result.push_back("Rows count: " + to_string(file_info.rows_count));
-	result.push_back("Elements count: " + to_string(file_info.elements_count));
-	result.push_back("Defined columns count: " + to_string(file_info.defined_columns_count));
+	result.push_back(" File path: " + file_info.file_path);
+	result.push_back(" File size: " + to_string(file_info.file_size) + " bytes");
+	result.push_back(" Rows count: " + to_string(file_info.rows_count));
+	result.push_back(" Elements count: " + to_string(file_info.elements_count));
+	result.push_back(" Defined columns count: " + to_string(file_info.defined_columns_count));
 	if (!file_info.columns_names.empty()) {
-		result.push_back("Columns:");
+		result.push_back(" Columns:");
 		for (int i = 0; i < file_info.columns_names.size(); i++)
-			result.push_back("  [" + file_info.columns_names.at(i) + "]");
+			result.push_back("   [" + file_info.columns_names.at(i) + "]");
 	}
 	return result;
 }
