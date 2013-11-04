@@ -3,7 +3,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-string init[] = { "Load a file", "Clear console screen", "Exit the application" };
+string init[] = { "Load a file", "Change delimiter", "Current delimiter", "About author", "Exit the application" };
 
 // Initializes simple mode
 void initModeSimple() {
@@ -18,15 +18,45 @@ void initModeSimple() {
 			if (fileMenu() == -1) continue;
 		} // Load the file
 		
-		else if (command == "2") { // Clear console
+		else if (command == "2") { // Change delimiter
+			cout << "Current delimiter > \'" << _ELEMENT_DELIMITER << "\'" << endl;
+			cout << "    New delimiter > ";
+			char prev_delim = _ELEMENT_DELIMITER;
+			cin >> _ELEMENT_DELIMITER;
+			if (!cin.good()) {
+				system("cls");
+				cout << "Bad delimiter symbol. Old one restored";
+				continue;
+			}
 			system("cls");
-		} // Clear console
+			cout << "Delimiter changed > \'" << _ELEMENT_DELIMITER << "\'" << endl;
+			continue;
+		} // Change delimiter
+
+		else if (command == "3") { // Current delimiter
+			system("cls");
+			cout << "Current delimiter > \'" << _ELEMENT_DELIMITER << "\'" << endl;
+			continue;
+		} // Current delimiter
+
+		else if (command == "4") { // About author
+			system("cls");
+			cout << "Author:" << endl;
+			cout << "  Name:     Nikita" << endl;
+			cout << "  Surname:  Kurpas" << endl;
+			cout << "  Login:    KUR0089" << endl;
+			cout << "  Group:    Unknown" << endl;
+			cout << "  Time:     16:00" << endl;
+			cout << "Author end;" << endl << endl;
+			continue;
+		} // About author
 
 		else if (command == "5") { // Exit
 			break;
 		} // Exit
 		system("cls");
 	} // Main while loop
+	return;
 }
 
 string file_ops[] = { "Show information about the file", "Print contents", "Search file", "Edit row", "Delete row", "Insert row", "Save file", "Save file as...", "Export to HTML", "Exit file menu (close file)" };
@@ -40,8 +70,10 @@ int fileMenu() {
 	/* LOADING THE FILE */
 	try {
 		cin >> path;
+		file.close();
 		file.open(path);
 		if (file.is_open()) { // file loaded
+			_table.clear(); _columns.clear(); _current_display.clear();
 			parseFile(file, _table, _columns, _LINE_DELIMITER, _ELEMENT_DELIMITER);
 			system("cls");
 			cout << "File \"" << path << "\" loaded\n";
@@ -65,7 +97,7 @@ int fileMenu() {
 	} // try-catch end
 // -------------------------------------------------------
 
-	/* Main UI part */
+	/* MAIN UI PART */
 	bool b_printCommands = true;
 	bool b_printContents = true;
 	_current_display = _table;
@@ -122,9 +154,15 @@ int fileMenu() {
 			int row_num; cin >> row_num;
 			if (!cin.good() || row_num < 1 || row_num > _current_display.size()) {
 				cout << "Bad row number!\n";
-				b_printCommands = false;
+				b_printCommands = false; b_printContents = false;
 				continue;
 			}
+			//_current_display.erase(_current_display.begin() + row_num);
+			str_vec row = _current_display.at(row_num);
+			int orig_row_index = StrToInt(row.at(row.size() - 1)) - 1;
+			_table.erase(_table.begin() + orig_row_index - 1);
+			_current_display.erase(_current_display.begin() + row_num - 1);
+			system("cls"); b_printCommands = true; b_printContents = true;
 		}
 
 		else if (command == "6") {							// Insert row

@@ -205,6 +205,7 @@ matrix search(matrix& _table, string str) {
 			std::size_t found = toLowerCase(_table.at(i).at(j)).find(toLowerCase(str));
 			if (found != std::string::npos) {
 				str_vec tmp = _table.at(i);
+				tmp.pop_back();
 				tmp.push_back(to_string(i));
 				result.push_back(tmp);
 				break;

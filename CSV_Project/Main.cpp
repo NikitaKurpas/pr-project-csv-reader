@@ -15,6 +15,10 @@ int main(int _argc, char* argv)
 	cin.sync();
 	command = "";
 	system("cls");
-	cout << setw(60) << "CSV Reader. Project by Nikita Kurpas\n\n";
+	cout << "================================================================================";
+	cout << "           SUPER CSV Reader 2013. Project by Nikita Kurpas | KUR0089\n";
+	cout << "================================================================================";
+	cout << endl;
 	initModeSimple();
+	return 0;
 }
