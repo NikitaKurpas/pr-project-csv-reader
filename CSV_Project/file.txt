@@ -1,9 +1,10 @@
-c[Name;Developer;Release year;Genre
-Minecraft;Mojang;2011;SandBox
-StarCraft;Blizzard;1998;Strategy
-StarCraft: BroodWar;Blizzard;1999;Strategy, Expansion
-StarCraft 2;Blizzard;2010;Strategy
-Alien Swarm;Valve;2010;Shooter,Top-down
-Left 4 Dead;Valve;2008;First-person shooter
-Resident Evil;Capcom;1996;Shooter
-Counter Strike;Valve;2000;First-person shooter
+Name;Developer;Release year;Genre;
+Minecraft;Mojang;2011;SandBox;
+StarCraft;Blizzard;1998;Strategy;
+StarCraft: BroodWar;Blizzard;1999;Strategy, Expansion;
+StarCraft 2;Blizzard;2010;Strategy;
+Alien Swarm;Valve;2010;Shooter,Top-down;
+Left 4 Dead;Valve;2008;First-person shooter;
+Resident Evil;Capcom;1996;Shooter;
+Counter Strike;Valve;2000;First-person shooter;
+Alien Rage;;;;

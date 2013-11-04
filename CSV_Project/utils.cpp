@@ -68,16 +68,16 @@ void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DEL
 
 	int row_count = 0, element_count = 0;
 	int col_count = 0;
+	bool columnsRead = false;
 	while (getline(file, *line, _LINE_DELIMITER)) {
-		if (line->find("c[") == 0) {
-			line->erase(0, 2);
-
+		if (!columnsRead) {
 			stringstream st(*line);
 			
 			while (getline(st, *lineElement, _ELEMENT_DELIMITER)) {
 				_columns.push_back(*lineElement);
 				col_count++;
 			}
+			columnsRead = true;
 			continue;
 		}
 
@@ -98,6 +98,17 @@ void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DEL
 	file_info.columns_names = _columns;
 	file_info.rows_count = row_count;
 	file_info.elements_count = element_count;
+}
+
+void saveFile(ofstream& file, matrix& _table, str_vec& _columns, char _LINE_DELIMITER, char _ELEMENT_DELIMITER) {
+	for (int i = 0; i < _columns.size(); i++)
+		file << _columns.at(i) << _ELEMENT_DELIMITER;
+	file << _LINE_DELIMITER;
+	for (int i = 0; i < _table.size(); i++) {
+		for (int j = 0; j < _table.at(i).size() - 1; j++)
+			file << _table.at(i).at(j) << _ELEMENT_DELIMITER;
+		file << _LINE_DELIMITER;
+	}
 }
 
 
@@ -166,16 +177,13 @@ str_vec split(string& str, char delim) {
 * @param _columns
 */
 void print(matrix& _table, str_vec& _columns) {
-	cout << "[Row number]";
-	if (!_columns.empty()) {
-		cout << ", ";
-		for (int i = 0; i < _columns.size(); i++) {
-			string tmp = "[" + _columns.at(i) + "]";
-			if (i == _columns.size() - 1)
-				cout << tmp;
-			else
-				cout << tmp << ", ";
-		}
+	cout << "[Row number], ";
+	for (int i = 0; i < _columns.size(); i++) {
+		string tmp = "[" + _columns.at(i) + "]";
+		if (i == _columns.size() - 1)
+			cout << tmp;
+		else
+			cout << tmp << ", ";
 	}
 	cout << endl;
 	for (int i = 0; i < _table.size(); i++) {
@@ -227,10 +235,8 @@ str_vec info() {
 	result.push_back(" Rows count: " + to_string(file_info.rows_count));
 	result.push_back(" Elements count: " + to_string(file_info.elements_count));
 	result.push_back(" Defined columns count: " + to_string(file_info.defined_columns_count));
-	if (!file_info.columns_names.empty()) {
-		result.push_back(" Columns:");
-		for (int i = 0; i < file_info.columns_names.size(); i++)
-			result.push_back("   [" + file_info.columns_names.at(i) + "]");
-	}
+	result.push_back(" Columns:");
+	for (int i = 0; i < file_info.columns_names.size(); i++)
+		result.push_back("   [" + file_info.columns_names.at(i) + "]");
 	return result;
 }

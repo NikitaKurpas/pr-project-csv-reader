@@ -31,6 +31,8 @@ void printHelp();
 
 void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DELIMITER, char _ELEMENT_DELIMITER);
 
+void saveFile(ofstream& file, matrix& _table, str_vec& _columns, char _LINE_DELIMITER, char _ELEMENT_DELIMITER);
+
 str_vec split(string& str, char delim);
 
 void print(matrix& _table, str_vec& _columns);

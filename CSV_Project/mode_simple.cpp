@@ -75,6 +75,7 @@ int fileMenu() {
 		if (file.is_open()) { // file loaded
 			_table.clear(); _columns.clear(); _current_display.clear();
 			parseFile(file, _table, _columns, _LINE_DELIMITER, _ELEMENT_DELIMITER);
+			file.close();
 			system("cls");
 			cout << "File \"" << path << "\" loaded\n";
 			_FILE_LOADED = true;
@@ -143,7 +144,9 @@ int fileMenu() {
 					b_printCommands = false; b_printContents = false;
 					continue;
 				}
-				edit_row(_current_display.at(row_num - 1));
+				row_num--;
+				str_vec row = _current_display.at(row_num);
+				edit_row(row, row_num);
 				system("cls"); b_printCommands = true; b_printContents = true;
 				continue;
 			}
@@ -157,7 +160,6 @@ int fileMenu() {
 				b_printCommands = false; b_printContents = false;
 				continue;
 			}
-			//_current_display.erase(_current_display.begin() + row_num);
 			str_vec row = _current_display.at(row_num);
 			int orig_row_index = StrToInt(row.at(row.size() - 1)) - 1;
 			_table.erase(_table.begin() + orig_row_index - 1);
@@ -166,15 +168,36 @@ int fileMenu() {
 		}
 
 		else if (command == "6") {							// Insert row
-
+			str_vec row;
+			for (int i = 0; i < _columns.size(); i++)
+				row.push_back("");
+			row.push_back(to_string(_table.size()));
+			edit_row(row, _current_display.size());
+			system("cls"); b_printCommands = true; b_printContents = true;
+			continue;
 		}
 
 		else if (command == "7") {							// Save file
-
+			ofstream file; file.open(file_info.file_path);
+			if (file.is_open())
+				saveFile(file, _table, _columns, _LINE_DELIMITER, _ELEMENT_DELIMITER);
+			file.close();
+			cout << "File saved!" << endl; b_printCommands = false; b_printContents = false;
+			continue;
 		}
 
 		else if (command == "8") {							// Save file as
-
+			cout << "Enter file path: ";
+			cin >> command;
+			ofstream file; file.open(command);
+			if (file.is_open()) {
+				saveFile(file, _table, _columns, _LINE_DELIMITER, _ELEMENT_DELIMITER);
+				cout << "File saved!" << endl; b_printCommands = false; b_printContents = false;
+				continue;
+			}
+			else
+				cout << "Failed to open file for writing!" << endl; b_printCommands = false; b_printContents = false;
+			continue;
 		}
 
 		else if (command == "9") {							// Export to HTML
@@ -192,18 +215,17 @@ int fileMenu() {
 
 string edit_row_ops[] = { "Edit element", "Delete element", "Save", "Cancel" };
 
-int edit_row(str_vec& row) {
+int edit_row(str_vec& row, int row_num) {
 	while (isJavaTheBest) {
 		system("cls");
 		print_row(row);
-		cout << endl;
 		printCommands(edit_row_ops, sizeof(edit_row_ops) / sizeof(*edit_row_ops));
 		cout << "choise> ";
 		string command; cin >> command;
 		if (command == "1") {
 			cout << "Element number: ";
 			int elem; cin >> elem;
-			if (!cin.good() || elem < 1 || elem > row.size()) {
+			if (!cin.good() || elem < 1 || elem > row.size() - 1) {
 				cout << "Bad element number" << endl << endl;
 				system("cls"); continue;
 			}
@@ -211,16 +233,30 @@ int edit_row(str_vec& row) {
 			cout << "Old > " << row.at(elem) << endl;
 			cout << "New > "; getline(cin, command, '\n'); getline(cin, command, '\n');
 			row.at(elem).replace(row.at(elem).begin(), row.at(elem).end(), command);
-			
+
 		}
 
 		else if (command == "2") {
-
+			cout << "Element number: ";
+			int elem; cin >> elem;
+			if (!cin.good() || elem < 1 || elem > row.size() - 1) {
+				cout << "Bad element number" << endl << endl;
+				system("cls"); continue;
+			}
+			elem--;
+			row.at(elem).replace(row.at(elem).begin(), row.at(elem).end(), "");
 		}
 
 		else if (command == "3") {
 			int orig_row_index = StrToInt(row.at(row.size() - 1)) - 1;
-			_table.at(orig_row_index) = row;
+			if (orig_row_index = _table.size())
+				_table.push_back(row);
+			else
+				_table.at(orig_row_index) = row;
+			if (row_num == _current_display.size())
+				_current_display.push_back(row);
+			else
+				_current_display.at(row_num) = row;
 			break;
 		}
 
@@ -234,21 +270,15 @@ int edit_row(str_vec& row) {
 
 void print_row(str_vec& row) {
 	cout << "Row elements:" << endl;
-	if (_columns.empty())
-		for (int i = 0; i < row.size() - 1; i++) {
-			cout << "[" << to_string(i + 1) << "] " << row.at(i) << endl;
+	for (int i = 0; i < _columns.size(); i++) {
+		string tmp;
+		try {
+			cout << setw(4) << to_string(i + 1) + "" << setw(20) << "> [" + _columns.at(i) + "]" << row.at(i) << endl;
 		}
-	else {
-		for (int i = 0; i < _columns.size(); i++) {
-			string tmp;
-			try {
-				cout << setw(4) << to_string(i + 1) + "" << setw(20) << "> [" + _columns.at(i) + "]" << row.at(i) << endl;
-			}
-			catch(exception) {
-				cout << setw(4) << to_string(i + 1) + "" << setw(20) << "> [" + _columns.at(i) + "]" << endl;
-			}
+		catch(exception) {
+			cout << setw(4) << to_string(i + 1) + "" << setw(20) << "> [" + _columns.at(i) + "]" << endl;
+		}
 			
-		}
 	}
 }
 
