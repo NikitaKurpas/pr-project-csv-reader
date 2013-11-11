@@ -33,6 +33,8 @@ void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DEL
 
 void saveFile(ofstream& file, matrix& _table, str_vec& _columns, char _LINE_DELIMITER, char _ELEMENT_DELIMITER);
 
+void HTMLexport(ofstream& file, matrix& _table, str_vec& _columns);
+
 str_vec split(string& str, char delim);
 
 void print(matrix& _table, str_vec& _columns);

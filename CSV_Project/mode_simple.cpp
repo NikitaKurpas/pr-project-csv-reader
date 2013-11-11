@@ -5,7 +5,9 @@
 
 string init[] = { "Load a file", "Change delimiter", "Current delimiter", "About author", "Exit the application" };
 
-// Initializes simple mode
+/**
+ * Main method-menu. Beginning of the application.
+ */
 void initModeSimple() {
 	cin.sync();
 	command = "";
@@ -61,7 +63,9 @@ void initModeSimple() {
 
 string file_ops[] = { "Show information about the file", "Print contents", "Search file", "Edit row", "Delete row", "Insert row", "Save file", "Save file as...", "Export to HTML", "Exit file menu (close file)" };
 
-// Opens the file menu
+/**
+ * Method-menu to work with a file
+ */
 int fileMenu() {
 	cout << "Enter file path and name (C:\\some_dir\\some_file.txt): ";
 	string path;
@@ -192,16 +196,30 @@ int fileMenu() {
 			ofstream file; file.open(command);
 			if (file.is_open()) {
 				saveFile(file, _table, _columns, _LINE_DELIMITER, _ELEMENT_DELIMITER);
+				file.close();
 				cout << "File saved!" << endl; b_printCommands = false; b_printContents = false;
 				continue;
 			}
 			else
 				cout << "Failed to open file for writing!" << endl; b_printCommands = false; b_printContents = false;
+			file.close();
 			continue;
 		}
 
 		else if (command == "9") {							// Export to HTML
-
+			cout << "Enter file path (it should end with .html): ";
+			cin >> command;
+			ofstream file; file.open(command);
+			if (file.is_open()) {
+				HTMLexport(file, _table, _columns);
+				file.close();
+				cout << "File saved!" << endl; b_printCommands = false; b_printContents = false;
+				continue;
+			}
+			else
+				cout << "Failed to open file for writing!" << endl; b_printCommands = false; b_printContents = false;
+			file.close();
+			continue;
 		}
 
 		else if (command == "10") break;						// Exit file menu
@@ -215,6 +233,11 @@ int fileMenu() {
 
 string edit_row_ops[] = { "Edit element", "Delete element", "Save", "Cancel" };
 
+/**
+ * Method-menu for editing a row.
+ * \param[in] row		Row for editing
+ * \param[in] row_num	Row number
+ */
 int edit_row(str_vec& row, int row_num) {
 	while (isJavaTheBest) {
 		system("cls");
@@ -267,7 +290,10 @@ int edit_row(str_vec& row, int row_num) {
 	return -1;
 }
 
-
+/**
+ * Method to print a row for edition
+ * \param[in] row	A vector cntaining a row to print
+ */
 void print_row(str_vec& row) {
 	cout << "Row elements:" << endl;
 	for (int i = 0; i < _columns.size(); i++) {
@@ -284,8 +310,8 @@ void print_row(str_vec& row) {
 
 /**
  * Prints all strings from an array in this order: "index: element"
- * @param[in] arr	Array with commands
- * @param[in] size	Array size
+ * \param[in] arr	Array with commands
+ * \param[in] size	Array size
  */
 void printCommands(string arr[], int size) {
 	for (int i = 0; i < size; i++) {

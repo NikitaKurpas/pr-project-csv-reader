@@ -4,9 +4,10 @@ using namespace std;
 
 struct FileInfo file_info;
 
-/*
+/**
  * Converts all given string charecters to lowercase
- * @param str
+ * \param[in] str String
+ * \return Converted string
  */
 string toLowerCase(string str)
 {
@@ -18,6 +19,11 @@ string toLowerCase(string str)
 	return str;
 }
 
+/**
+ * Converts given string to integer
+ * \param[in] str String
+ * \return Converted int
+ */
 int StrToInt(string str) {
 	int result;
 	istringstream(str) >> result;
@@ -25,10 +31,10 @@ int StrToInt(string str) {
 
 }
 
-/*
- * Prints one help command. Only used in printHelp() method
- * @param cmd
- * @param desc
+/**
+ * Prints one help command. Only used in printHelp() method. Helper method
+ * \param[in] cmd	Comand
+ * \param[in] desc	Description
  */
 void printCommand(string cmd, string desc)
 {
@@ -39,8 +45,9 @@ void printCommand(string cmd, string desc)
 }
 
 
-/*
- * Prints help
+/**
+ * Prints help.
+ * \deprecated Not useful anymore
  */
 void printHelp()
 {
@@ -55,13 +62,13 @@ void printHelp()
 	cout << endl;
 }
 
-/*
+/**
  * Reads a CSV file in fstream to the _table using specified line and element delimiters
- * @param file
- * @param _table
- * @param _columns
- * @param _LINE_DELIMITER
- * @param _ELEMENT_DELIMITER
+ * \param[in] file					A file to parse
+ * \param[in] _table				Matrix that will contain file contents
+ * \param[in] _columns				Vector that will contain columns
+ * \param[in] _LINE_DELIMITER		Line delimiter
+ * \param[in] _ELEMENT_DELIMITER	Element delimiter
  */
 void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DELIMITER, char _ELEMENT_DELIMITER) {
 	string *line = new string, *lineElement = new string;
@@ -100,6 +107,14 @@ void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DEL
 	file_info.elements_count = element_count;
 }
 
+/**
+* Saves a CSV file in fstream to the _table using specified line and element delimiters
+* \param[in] file					A file to save to
+* \param[in] _table					Matrix that contains elements
+* \param[in] _columns				Vector that contains columns
+* \param[in] _LINE_DELIMITER		Line delimiter
+* \param[in] _ELEMENT_DELIMITER		Element delimiter
+*/
 void saveFile(ofstream& file, matrix& _table, str_vec& _columns, char _LINE_DELIMITER, char _ELEMENT_DELIMITER) {
 	for (int i = 0; i < _columns.size(); i++)
 		file << _columns.at(i) << _ELEMENT_DELIMITER;
@@ -111,11 +126,41 @@ void saveFile(ofstream& file, matrix& _table, str_vec& _columns, char _LINE_DELI
 	}
 }
 
+/**
+* Exports content to HTML
+* \param[in] file					A file to save to
+* \param[in] _table					Matrix that contains elements
+* \param[in] _columns				Vector that contains columns
+*/
+void HTMLexport(ofstream& file, matrix& _table, str_vec& _columns) {
+	file << "<!DOCTYPE html>\n"
+		<< "<head>\n"
+		<< "<title>" << "Export of " << file_info.file_path << " to HTML" << "</title>\n"
+		<< "<style>\n th, td { padding: 5px 7px; font-family: Arial, Helvetica, sans-serif; }\n"
+		<< "th { background-color: #DCDCDC; }\n</style>\n"
+		<< "</head>\n<body>\n<div style=\"height: 100%; width: 100%;\">\n"
+		<< "<table style=\"margin: 0 auto;\" border=\"1\" cellspacing=\"0\">\n<tr>\n";
+	for (int i = 0; i < _columns.size(); i++) {
+		file << "<th>" << _columns.at(i) << "</th>\n";
+	}
+	file << "</tr>\n";
+	for (int i = 0; i < _table.size(); i++) {
+		file << "<tr>\n";
+		for (int j = 0; j < _table.at(i).size() - 1; j++) {
+			file << "<td>" << _table.at(i).at(j) << "</td>\n";
+		}
+		file << "</tr>\n";
+	}
+	file << "</table>\n</div>\n</body>\n</html>";
+
+}
+
 
 /*
  * Splits the given string into elements
- * @param str
- * @param delim
+ * \param str		String to split
+ * \param delim		Delimiter
+ * \return An array, containing splitted string
  */
 str_vec split(string& str, char delim) {
 	stringstream stream(str);
@@ -173,8 +218,8 @@ str_vec split(string& str, char delim) {
 
 /*
 * Prints the contents of the _table on the screen.
-* @param _table
-* @param _columns
+* \param _table		Elements matrix
+* \param _columns	Columns vector
 */
 void print(matrix& _table, str_vec& _columns) {
 	cout << "[Row number], ";
@@ -225,7 +270,7 @@ matrix search(matrix& _table, string str) {
 
 /*
 * Gives basic information about _table
-* @param _table
+* \return Vector containing the info
 */
 str_vec info() {
 	str_vec result;

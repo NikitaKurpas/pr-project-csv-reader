@@ -10,6 +10,9 @@ matrix					  _current_display;			  // A matrix containing current visible items 
 string                    command;                    // User input (command) will be stored here
 ifstream                  file;                       // The file will be loaded here
 
+/**
+ * Simple main() method to init the application
+ */
 int main(int _argc, char* argv)
 {
 	cin.sync();
