@@ -9,17 +9,20 @@
 
 using namespace std;
 
-typedef vector<vector<string>>	matrix;/*revolution*/		// <-- Neo is within
-typedef vector<string>			str_vec;
+typedef vector<vector<string>>	matrix;///< revolution =) For internal use
+typedef vector<string>			str_vec;///< For internal use
 
+/**
+ * A structure to hold file info
+ */
 extern struct FileInfo {
-	string file_path;
-	int file_size;
-	int rows_count;
-	int elements_count;
-	int defined_columns_count;
-	str_vec columns_names;
-} file_info;
+	string file_path; ///< File path
+	int file_size; ///< File size
+	int rows_count; ///< Count of rows in the file
+	int elements_count; ///< Count of elements in the file
+	int defined_columns_count; ///< Number of defined columns in the file
+	str_vec columns_names; ///< Vector containing column names
+} file_info; 
 
 string toLowerCase(string str);
 
