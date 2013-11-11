@@ -235,8 +235,8 @@ string edit_row_ops[] = { "Edit element", "Delete element", "Save", "Cancel" };
 
 /**
  * Method-menu for editing a row.
- * \param[in] row		Row for editing
- * \param[in] row_num	Row number
+ * \param row		Row for editing
+ * \param row_num	Row number
  */
 int edit_row(str_vec& row, int row_num) {
 	while (isJavaTheBest) {
@@ -292,7 +292,7 @@ int edit_row(str_vec& row, int row_num) {
 
 /**
  * Method to print a row for edition
- * \param[in] row	A vector cntaining a row to print
+ * \param row	A vector cntaining a row to print
  */
 void print_row(str_vec& row) {
 	cout << "Row elements:" << endl;
@@ -310,8 +310,8 @@ void print_row(str_vec& row) {
 
 /**
  * Prints all strings from an array in this order: "index: element"
- * \param[in] arr	Array with commands
- * \param[in] size	Array size
+ * \param arr	Array with commands
+ * \param size	Array size
  */
 void printCommands(string arr[], int size) {
 	for (int i = 0; i < size; i++) {

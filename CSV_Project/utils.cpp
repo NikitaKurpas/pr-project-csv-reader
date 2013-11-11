@@ -6,7 +6,7 @@ struct FileInfo file_info;
 
 /**
  * Converts all given string charecters to lowercase
- * \param[in] str String
+ * \param str String
  * \return Converted string
  */
 string toLowerCase(string str)
@@ -34,7 +34,7 @@ int StrToInt(string str) {
 /**
  * Prints one help command. Only used in printHelp() method. Helper method
  * \param[in] cmd	Comand
- * \param[in] desc	Description
+ * \param desc	Description
  */
 void printCommand(string cmd, string desc)
 {
@@ -64,11 +64,11 @@ void printHelp()
 
 /**
  * Reads a CSV file in fstream to the _table using specified line and element delimiters
- * \param[in] file					A file to parse
- * \param[in] _table				Matrix that will contain file contents
- * \param[in] _columns				Vector that will contain columns
- * \param[in] _LINE_DELIMITER		Line delimiter
- * \param[in] _ELEMENT_DELIMITER	Element delimiter
+ * \param file					A file to parse
+ * \param _table				Matrix that will contain file contents
+ * \param _columns				Vector that will contain columns
+ * \param _LINE_DELIMITER		Line delimiter
+ * \param _ELEMENT_DELIMITER	Element delimiter
  */
 void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DELIMITER, char _ELEMENT_DELIMITER) {
 	string *line = new string, *lineElement = new string;
@@ -109,11 +109,11 @@ void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DEL
 
 /**
 * Saves a CSV file in fstream to the _table using specified line and element delimiters
-* \param[in] file					A file to save to
-* \param[in] _table					Matrix that contains elements
-* \param[in] _columns				Vector that contains columns
-* \param[in] _LINE_DELIMITER		Line delimiter
-* \param[in] _ELEMENT_DELIMITER		Element delimiter
+* \param file					A file to save to
+* \param _table					Matrix that contains elements
+* \param _columns				Vector that contains columns
+* \param _LINE_DELIMITER		Line delimiter
+* \param _ELEMENT_DELIMITER		Element delimiter
 */
 void saveFile(ofstream& file, matrix& _table, str_vec& _columns, char _LINE_DELIMITER, char _ELEMENT_DELIMITER) {
 	for (int i = 0; i < _columns.size(); i++)
@@ -128,9 +128,9 @@ void saveFile(ofstream& file, matrix& _table, str_vec& _columns, char _LINE_DELI
 
 /**
 * Exports content to HTML
-* \param[in] file					A file to save to
-* \param[in] _table					Matrix that contains elements
-* \param[in] _columns				Vector that contains columns
+* \param file					A file to save to
+* \param _table					Matrix that contains elements
+* \param _columns				Vector that contains columns
 */
 void HTMLexport(ofstream& file, matrix& _table, str_vec& _columns) {
 	file << "<!DOCTYPE html>\n"
@@ -247,8 +247,8 @@ void print(matrix& _table, str_vec& _columns) {
 
 /*
  * Searches the _table for occurances of str 
- * \param[in]  _table
- * \param[in]  str
+ * \param  _table
+ * \param  str
  * \return	   matrix
  */
 matrix search(matrix& _table, string str) {
