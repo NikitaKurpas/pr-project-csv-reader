@@ -5,8 +5,8 @@ using namespace std;
 struct FileInfo file_info;
 
 /**
- * Converts all given string charecters to lowercase
- * \param str String
+ * Converts given string to lowercase
+ * \param str Input string
  * \return Converted string
  */
 string toLowerCase(string str)
@@ -22,7 +22,7 @@ string toLowerCase(string str)
 /**
  * Converts given string to integer
  * \param[in] str String
- * \return Converted int
+ * \return Converted integer
  */
 int StrToInt(string str) {
 	int result;
@@ -32,38 +32,7 @@ int StrToInt(string str) {
 }
 
 /**
- * Prints one help command. Only used in printHelp() method. Helper method
- * \param[in] cmd	Comand
- * \param desc	Description
- */
-void printCommand(string cmd, string desc)
-{
-	cout << setfill('.') << setw(20);
-	cout << left << cmd;
-	cout << setfill(' ') << setw(60);
-	cout << left << desc;
-}
-
-
-/**
- * Prints help.
- * \deprecated Not useful anymore
- */
-void printHelp()
-{
-	cout << endl;
-	printCommand("Command", "Description");
-	cout << endl;
-	printCommand("help", "Prints this help");
-	printCommand("load <file>", "Loads a file by the given file name");
-	printCommand("save_html <file>", "Saves the result into the given file");
-	printCommand("clr", "Clears this console's screen");
-	printCommand("mode_simple", "Changes mode to simple");
-	cout << endl;
-}
-
-/**
- * Reads a CSV file in fstream to the _table using specified line and element delimiters
+ * Reads a CSV file to the matrix using specified line and element delimiters
  * \param file					A file to parse
  * \param _table				Matrix that will contain file contents
  * \param _columns				Vector that will contain columns
@@ -108,7 +77,7 @@ void parseFile(ifstream& file, matrix& _table, str_vec& _columns, char _LINE_DEL
 }
 
 /**
-* Saves a CSV file in fstream to the _table using specified line and element delimiters
+* Saves matrix values to a CSV file using specified line and element delimiters
 * \param file					A file to save to
 * \param _table					Matrix that contains elements
 * \param _columns				Vector that contains columns
@@ -156,7 +125,7 @@ void HTMLexport(ofstream& file, matrix& _table, str_vec& _columns) {
 }
 
 
-/*
+/**
  * Splits the given string into elements
  * \param str		String to split
  * \param delim		Delimiter
@@ -217,7 +186,7 @@ str_vec split(string& str, char delim) {
 }*/
 
 /*
-* Prints the contents of the _table on the screen.
+* Prints the contents of the matrix on the screen.
 * \param _table		Elements matrix
 * \param _columns	Columns vector
 */
@@ -245,11 +214,11 @@ void print(matrix& _table, str_vec& _columns) {
 	}
 }
 
-/*
- * Searches the _table for occurances of str 
- * \param  _table
- * \param  str
- * \return	   matrix
+/**
+ * Searches the matrix for occurrences of specified string 
+ * \param  _table A matrix that will be searched
+ * \param  str Search string
+ * \return Matrix containin search results
  */
 matrix search(matrix& _table, string str) {
 	matrix result;
@@ -269,7 +238,7 @@ matrix search(matrix& _table, string str) {
 }
 
 /*
-* Gives basic information about _table
+* Gives basic information about file and matrix
 * \return Vector containing the info
 */
 str_vec info() {

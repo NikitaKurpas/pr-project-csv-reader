@@ -13,7 +13,7 @@ matrix                    _table;
 str_vec					  _columns;					  
 matrix					  _current_display;			  
 string                    command;                    
-ifstream                  file;                       
+ifstream                  file;     ///< The file will be loaded here.                   
 
 /**
  * Simple main() method to init the application

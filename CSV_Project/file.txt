@@ -7,4 +7,4 @@ Alien Swarm;Valve;2010;Shooter,Top-down;
 Left 4 Dead;Valve;2008;First-person shooter;
 Resident Evil;Capcom;1996;Shooter;
 Counter Strike;Valve;2000;First-person shooter;
-Alien Rage;;;;
+Alien Rage;Valve;2011;Top-down, co-op;

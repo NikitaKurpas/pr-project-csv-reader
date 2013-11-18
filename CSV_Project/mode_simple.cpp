@@ -14,7 +14,7 @@ void initModeSimple() {
 	while (true) {
 		printCommands(init, sizeof(init) / sizeof(*init));
 		cout << "choise> ";
-		cin >> command;
+		cin.sync(); cin >> command;
 
 		if (command == "1") { // Load the file
 			if (fileMenu() == -1) continue;
@@ -24,7 +24,7 @@ void initModeSimple() {
 			cout << "Current delimiter > \'" << _ELEMENT_DELIMITER << "\'" << endl;
 			cout << "    New delimiter > ";
 			char prev_delim = _ELEMENT_DELIMITER;
-			cin >> _ELEMENT_DELIMITER;
+			cin.sync(); cin >> _ELEMENT_DELIMITER;
 			if (!cin.good()) {
 				system("cls");
 				cout << "Bad delimiter symbol. Old one restored";
@@ -73,7 +73,7 @@ int fileMenu() {
 // -------------------------------------------------------
 	/* LOADING THE FILE */
 	try {
-		cin >> path;
+		cin.sync(); cin >> path;
 		file.close();
 		file.open(path);
 		if (file.is_open()) { // file loaded
@@ -115,7 +115,7 @@ int fileMenu() {
 			printCommands(file_ops, sizeof(file_ops) / sizeof(*file_ops));
 		}
 		cout << "choise> ";
-		cin >> command;
+		cin.sync(); cin >> command;
 		if (command == "1") {								// Show info
 			system("cls"); b_printCommands = true; b_printContents = false;
 			str_vec _info = info();
@@ -133,7 +133,7 @@ int fileMenu() {
 
 		else if (command == "3") {							// Search file
 			cout << "search> ";
-			string search_str; cin >> search_str;
+			string search_str; cin.sync(); cin >> search_str;
 			matrix search_result = search(_table, search_str);
 			system("cls"); b_printCommands = true; b_printContents = true;
 			_current_display = search_result;
@@ -142,7 +142,7 @@ int fileMenu() {
 		else if (command == "4") {							// Edit row
 			if (!_current_display.empty()) {
 				cout << "Select row (1 - " << _current_display.size() << "): ";
-				int row_num; cin >> row_num;
+				int row_num; cin.sync(); cin >> row_num;
 				if (!cin.good() || row_num < 1 || row_num > _current_display.size()) {
 					cout << "Bad row number!\n";
 					b_printCommands = false; b_printContents = false;
@@ -158,7 +158,7 @@ int fileMenu() {
 
 		else if (command == "5") {							// Delete row
 			cout << "Select row (1 - " << _current_display.size() << "): ";
-			int row_num; cin >> row_num;
+			int row_num; cin.sync(); cin >> row_num;
 			if (!cin.good() || row_num < 1 || row_num > _current_display.size()) {
 				cout << "Bad row number!\n";
 				b_printCommands = false; b_printContents = false;
@@ -173,8 +173,12 @@ int fileMenu() {
 
 		else if (command == "6") {							// Insert row
 			str_vec row;
-			for (int i = 0; i < _columns.size(); i++)
-				row.push_back("");
+			cout << "Input values:" << endl;
+			for (int i = 0; i < _columns.size(); i++) {
+				cout << "[" + _columns.at(i) + "] > ";
+				cin.sync(); getline(cin, command);
+				row.push_back(command);
+			}
 			row.push_back(to_string(_table.size()));
 			edit_row(row, _current_display.size());
 			system("cls"); b_printCommands = true; b_printContents = true;
@@ -192,7 +196,7 @@ int fileMenu() {
 
 		else if (command == "8") {							// Save file as
 			cout << "Enter file path: ";
-			cin >> command;
+			cin.sync(); cin >> command;
 			ofstream file; file.open(command);
 			if (file.is_open()) {
 				saveFile(file, _table, _columns, _LINE_DELIMITER, _ELEMENT_DELIMITER);
@@ -208,10 +212,10 @@ int fileMenu() {
 
 		else if (command == "9") {							// Export to HTML
 			cout << "Enter file path (it should end with .html): ";
-			cin >> command;
+			cin.sync(); cin >> command;
 			ofstream file; file.open(command);
 			if (file.is_open()) {
-				HTMLexport(file, _table, _columns);
+				HTMLexport(file, _current_display, _columns);
 				file.close();
 				cout << "File saved!" << endl; b_printCommands = false; b_printContents = false;
 				continue;
@@ -244,35 +248,39 @@ int edit_row(str_vec& row, int row_num) {
 		print_row(row);
 		printCommands(edit_row_ops, sizeof(edit_row_ops) / sizeof(*edit_row_ops));
 		cout << "choise> ";
-		string command; cin >> command;
-		if (command == "1") {
+		string command;
+		cin.clear(); cin.sync();
+		getline(cin, command); //cin >> command;
+		if (command == "1") { // Edit Element
 			cout << "Element number: ";
 			int elem; cin >> elem;
 			if (!cin.good() || elem < 1 || elem > row.size() - 1) {
-				cout << "Bad element number" << endl << endl;
-				system("cls"); continue;
+			//	cout << "Bad element number" << endl << endl;
+			//	system("cls");
+				continue;
 			}
 			elem--;
-			cout << "Old > " << row.at(elem) << endl;
-			cout << "New > "; getline(cin, command, '\n'); getline(cin, command, '\n');
+			cout << "  Old > " << row.at(elem) << endl;
+			cout << "  New > "; cin.sync(); getline(cin, command); // cin.sync(); getline(cin, command, '\n');
 			row.at(elem).replace(row.at(elem).begin(), row.at(elem).end(), command);
-
+			continue;
 		}
 
-		else if (command == "2") {
+		else if (command == "2") { // Delete element
 			cout << "Element number: ";
-			int elem; cin >> elem;
+			int elem; cin.sync(); cin >> elem;
 			if (!cin.good() || elem < 1 || elem > row.size() - 1) {
-				cout << "Bad element number" << endl << endl;
-				system("cls"); continue;
+			//	cout << "Bad element number" << endl << endl;
+			//	system("cls"); 
+				continue;
 			}
 			elem--;
 			row.at(elem).replace(row.at(elem).begin(), row.at(elem).end(), "");
 		}
 
-		else if (command == "3") {
+		else if (command == "3") { // Save
 			int orig_row_index = StrToInt(row.at(row.size() - 1)) - 1;
-			if (orig_row_index = _table.size())
+			if (orig_row_index == _table.size())
 				_table.push_back(row);
 			else
 				_table.at(orig_row_index) = row;
@@ -283,7 +291,7 @@ int edit_row(str_vec& row, int row_num) {
 			break;
 		}
 
-		else if (command == "4") {
+		else if (command == "4") { // Cancel
 			break;
 		}
 	}
@@ -291,8 +299,8 @@ int edit_row(str_vec& row, int row_num) {
 }
 
 /**
- * Method to print a row for edition
- * \param row	A vector cntaining a row to print
+ * Method to print a row for editing
+ * \param row	A vector containing a row to print
  */
 void print_row(str_vec& row) {
 	cout << "Row elements:" << endl;
